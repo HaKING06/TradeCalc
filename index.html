@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1020">
+  <meta name="color-scheme" content="dark light">
+  <meta name="author" content="HaKING">
+  <meta name="application-name" content="HaKING TradeCalc">
+  <meta name="description" content="CS2 takaslarını gerçek nakit değeri, site bakiyesi, bonus, satış komisyonu ve takılı charm değeriyle karşılaştır. Kârını hesapla, kayıtlarını cihazında sakla.">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <link rel="canonical" href="https://trade.haking.tr/">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="mask-icon" href="/assets/favicon.svg" color="#3157d5">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="tr_TR">
+  <meta property="og:site_name" content="HaKING TradeCalc">
+  <meta property="og:title" content="HaKING TradeCalc — CS2 Trade Hesaplayıcı">
+  <meta property="og:description" content="Site değeri, nakit karşılığı, bonus, komisyon ve charmı aynı hesapta karşılaştır.">
+  <meta property="og:url" content="https://trade.haking.tr/">
+  <meta property="og:image" content="https://trade.haking.tr/assets/social-preview.svg">
+  <meta property="og:image:type" content="image/svg+xml">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="HaKING TradeCalc CS2 takas hesaplayıcısı">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="HaKING TradeCalc — CS2 Trade Hesaplayıcı">
+  <meta name="twitter:description" content="Gerçek nakit değerini, bonusu, komisyonu ve charm değerini hesaba kat.">
+  <meta name="twitter:image" content="https://trade.haking.tr/assets/social-preview.svg">
+  <meta name="twitter:image:alt" content="HaKING TradeCalc CS2 takas hesaplayıcısı">
+  <title>HaKING TradeCalc — CS2 Takas ve Kâr Hesaplayıcı</title>
+  <script src="/assets/theme.js"></script>
+  <link rel="stylesheet" href="/assets/styles.css">
+  <link rel="stylesheet" href="/assets/theme.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="#calculator" aria-label="HaKING TradeCalc ana sayfa">
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 64 64" focusable="false"><path class="brand-bars" d="M13 47h9V34h-9zm15 0h9V25h-9zm15 0h9V15h-9z"/><path class="brand-arrow" d="m13 27 12-9 10 6 18-14m-10 0h10v10"/></svg></span>
+        <span class="brand-copy"><span class="brand-name">HaKING</span><span class="brand-sub">TradeCalc <i aria-hidden="true">·</i> CS2</span></span>
+      </a>
+      <nav class="nav" aria-label="Ana gezinme">
+        <button class="active" data-view="calculator">Hesaplayıcı</button>
+        <button data-view="history">Takas geçmişi <span id="history-count">0</span></button>
+        <button data-view="guide">Nasıl çalışır?</button>
+      </nav>
+      <div class="top-actions">
+        <button class="btn theme-toggle" id="theme-toggle" type="button" aria-label="Açık temaya geç" title="Açık temaya geç"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg><span>Koyu tema</span></button>
+        <a class="btn donate" href="https://steamcommunity.com/tradeoffer/new/?partner=1800489426&amp;token=jIoKxNd7" target="_blank" rel="noopener noreferrer" title="Steam üzerinden geliştiriciye destek ol">Projeyi destekle</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="view active" id="view-calculator">
+      <div class="hero">
+        <div><div class="eyebrow">CS2 TRADE PLANNER</div><h1>Takas değerini net gör.</h1><p>Verdiğin itemleri, alacağın skinleri ve gerçek satış değerini tek yerde karşılaştır.</p></div>
+        <div class="hero-badge"><span aria-hidden="true">●</span> Kayıtların bu cihazda kalır</div>
+      </div>
+
+      <div class="workspace">
+        <section class="panel" aria-labelledby="deposit-heading">
+          <div class="panel-head">
+            <div class="section-title"><span class="step">01</span><div><h2 id="deposit-heading">Verdiğin itemler</h2><p>Siteye yansıyacak değer ile komisyon sonrası nakit karşılığını ayrı gir.</p></div></div>
+            <button class="btn small" id="add-deposit" type="button">＋ Item ekle</button>
+          </div>
+          <div class="panel-body"><div id="deposit-list" class="row-stack"></div><div id="deposit-empty" class="empty" hidden><strong>Henüz yatırım itemi yok</strong>Item ekleyip site ve piyasa fiyatlarını gir.</div></div>
+        </section>
+
+        <section class="panel" aria-labelledby="target-heading">
+          <div class="panel-head">
+            <div class="section-title"><span class="step">02</span><div><h2 id="target-heading">Alacağın itemler</h2><p>Site alışını ve brüt satış değerini gir; charmı yalnızca dahilse seç.</p></div></div>
+            <button class="btn small primary" id="add-target" type="button">＋ Hedef ekle</button>
+          </div>
+          <div class="panel-body"><div id="target-list" class="targets"></div><div id="target-empty" class="empty"><strong>Hedef item ekle</strong>Seçtiğin itemlerin toplam maliyeti ve tahmini kârı burada hesaplanır.</div></div>
+        </section>
+
+        <section class="panel" aria-label="Bonus ve takas özeti">
+          <div class="panel-body">
+            <div class="side-card">
+              <div class="side-title"><div><span class="eyebrow">SKINMONKEY</span><h3>İlk yükleme bonusu</h3></div><span class="bonus-amount" id="bonus-value">+$0.00</span></div>
+              <div class="bonus-top">
+                <label class="checkline"><input id="bonus-enabled" type="checkbox" checked><span>İlk yükleme bonusunu hesaba kat<small>Yalnızca SkinMonkey kampanya şartlarını karşılıyorsan açık bırak.</small></span></label>
+              </div>
+              <div class="bonus-progress-wrap"><div class="bonus-progress-label"><span>Yükleme kademesi</span><strong id="bonus-next">İlk kademe: $10</strong></div><div class="bonus-progress" role="progressbar" aria-label="SkinMonkey bonus kademesi" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="bonus-progress"></span></div></div>
+              <div class="bonus-tiers" aria-label="SkinMonkey bonus kademeleri">
+                <div class="bonus-tier" data-threshold="10"><span>$10</span><strong>$0.50</strong></div>
+                <div class="bonus-tier" data-threshold="50"><span>$50</span><strong>$2.50</strong></div>
+                <div class="bonus-tier" data-threshold="100"><span>$100</span><strong>$5.00</strong></div>
+              </div>
+              <details class="bonus-info"><summary>Bonus şartları ve PRIME kodu</summary><p id="bonus-note">Bonus yalnız SkinMonkey ilk yükleme kampanyasına aittir. Güncel uygunluğu ve koşulları SkinMonkey’de kontrol et.</p><div class="bonus-info-actions"><strong>PRIME</strong><button class="btn small" id="copy-referral-code" type="button">Kodu kopyala</button><a class="btn small primary" href="https://skinsmonkey.com/tr/r/PRIME" target="_blank" rel="noopener noreferrer">SkinMonkey’e git ↗</a></div></details>
+            </div>
+            <div class="side-card result-card">
+              <div class="side-title"><div><span class="eyebrow">TRADE ÖZETİ</span><h3>Beklenen sonuç</h3></div><span class="pill" id="ratio-pill">Oran bekleniyor</span></div>
+              <div class="quick-results"><div class="quick-profit"><span>Tahmini net kâr</span><strong id="quick-profit">$0.00</strong></div><div class="quick-balance"><span>Takas sonrası bakiye</span><strong id="quick-balance">$0.00</strong></div></div>
+              <div class="quick-stats"><div><span>Kullanılabilir kredi</span><strong id="quick-available">$0.00</strong></div><div><span>Hedef alış</span><strong id="quick-spend">$0.00</strong></div><div><span>Kâr marjı</span><strong id="quick-margin">—</strong></div></div>
+              <section class="advice-panel neutral" id="trade-advice" aria-live="polite"><span class="advice-icon" id="advice-icon" aria-hidden="true">✦</span><div class="advice-copy"><div class="eyebrow">Kısa değerlendirme</div><h2 id="advice-title">Fiyatları gir</h2><p id="advice-text">İki tarafın fiyatlarını tamamlayınca sonuç görünür.</p></div><span class="advice-badge" id="advice-badge">Hazır</span></section>
+              <details class="calculation-details" id="calculation-details">
+                <summary><span>Hesabı adım adım incele</span><small>Brüt kâr · komisyon · nakit maliyeti</small></summary>
+                <div class="calculation-details-body">
+                  <label class="fee-control"><span><strong>Hedef satış komisyonu</strong><small>Brüt piyasa fiyatına uygulanır. Net fiyat giriyorsan %0 kullan.</small></span><span class="fee-input"><input class="field" id="sale-fee-percent" type="number" min="0" max="50" step="0.1" value="0" inputmode="decimal"><span>%</span></span></label>
+                  <div class="summary-grid">
+                <div class="metric"><span>Yatırım nakit karşılığı</span><strong id="sum-deposit-cash">$0.00</strong></div>
+                <div class="metric"><span>Yatırım site değeri</span><strong id="sum-deposit-site">$0.00</strong></div>
+                <div class="metric"><span>Bonus kredisi</span><strong id="sum-bonus">$0.00</strong></div>
+                <div class="metric"><span>Kullanılabilir site bakiyesi</span><strong id="sum-available-site">$0.00</strong></div>
+                <div class="metric"><span>Hedef alış toplamı</span><strong id="sum-target-site">$0.00</strong></div>
+                <div class="metric"><span>Takas sonrası site bakiyesi</span><strong id="sum-site-remaining">$0.00</strong></div>
+                <div class="metric"><span>Kalan bakiyenin nakit eşdeğeri</span><strong id="sum-remaining-cash">$0.00</strong></div>
+                <div class="metric"><span>Hedef brüt piyasa toplamı</span><strong id="sum-target-gross">$0.00</strong></div>
+                <div class="metric"><span>Dahil charm değeri</span><strong id="sum-target-charm">$0.00</strong></div>
+                <div class="metric"><span>Tahmini satış komisyonu</span><strong id="sum-sale-fee">$0.00</strong></div>
+                <div class="metric"><span>Net satış geliri</span><strong id="sum-target-market">$0.00</strong></div>
+                <div class="metric"><span>Harcanan kredinin nakit maliyeti</span><strong id="sum-target-cost">$0.00</strong></div>
+                <div class="metric"><span>Brüt kâr (ücret öncesi)</span><strong id="sum-gross-profit">$0.00</strong></div>
+                <div class="metric"><span>Kâr marjı</span><strong id="sum-margin">—</strong></div>
+                    <div class="metric emphasis"><span>Net kâr · toplam değer</span><strong id="sum-profit">$0.00</strong></div>
+                  </div>
+                  <div class="formula-explainer"><h4>Hesap mantığı</h4><p><strong>Kullanılabilir kredi</strong> = verdiğin itemlerin site değeri + uygunsan SkinMonkey bonusu. <strong>Kalan bakiye</strong> = kullanılabilir kredi − hedef alış toplamı.</p><p><strong>Brüt kâr</strong> komisyon düşmeden önceki farktır. <strong>Net kâr</strong>, net satış gelirini ve kalan bakiyenin nakit eşdeğerini yatırdığın net nakitle karşılaştırır.</p><div class="result-guide"><div><strong>Artı sonuç</strong><span>Girdiğin satış tahmini ve ücretle işlem değer kazanıyor.</span></div><div><strong>Negatif / ince marj</strong><span>Komisyon veya fiyat hareketi tahmini kazancı silebilir.</span></div></div><p class="calculation-status" id="calculation-status" aria-live="polite">Fiyatları girince hesaplama durumu burada görünür.</p></div>
+                </div>
+              </details>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <section class="savebar">
+        <div class="savebar-inner">
+          <div class="savebar-copy"><strong>Bu trade planını kaydet</strong><span>Kayıt cihazında kalır · geçmişten düzenleyip dışa aktarabilirsin.</span></div>
+          <div class="savebar-result"><span>Tahmini net kâr</span><strong id="savebar-profit">$0.00</strong></div>
+          <div class="savebar-actions">
+            <label class="unlock-select"><span class="unlock-label">Ne zaman açılacak?</span><select class="field" id="unlock-days"><option value="0">Anında al</option><option value="1">1 gün sonra</option><option value="2">2 gün sonra</option><option value="3" selected>3 gün sonra</option><option value="4">4 gün sonra</option><option value="5">5 gün sonra</option><option value="6">6 gün sonra</option><option value="7">7 gün sonra</option><option value="8">8 gün sonra</option></select></label>
+            <button class="btn primary" id="save-trade" type="button">Takas planını kaydet</button>
+          </div>
+        </div>
+      </section>
+      <div class="data-strip"><span id="runtime-note">Steam fiyatı yalnızca referanstır; nakit tahsilatını satış yapacağın pazara göre doğrula. Kayıtlar bu cihazda kalır.</span><a href="#guide" data-open-view="guide">Adım adım kullanım ve hesap örneği →</a></div>
+    </section>
+
+    <section class="view" id="view-history">
+      <div class="view-heading history-heading"><div><div class="eyebrow">Yerel kayıt defteri</div><h1>Takas geçmişin</h1><p>Planlarını ara, sonuçlarına göre süz ve gerçek performansını takip et.</p></div><div class="history-actions"><button class="btn small" id="import-button" type="button">İçe aktar</button><button class="btn small" id="export-button" type="button">Dışa aktar</button><button class="btn small danger" id="clear-history" type="button">Geçmişi sil</button><input id="import-file" class="visually-hidden" type="file" accept="application/json,.json"></div></div>
+      <div class="history-controls"><label class="history-search-field"><span class="field-label">Item veya charm ara</span><input class="field" type="search" id="history-search" placeholder="Örn. AK-47, charm"></label><label><span class="field-label">Kayıt tarihi</span><input class="field" type="date" id="history-date"></label><label><span class="field-label">Sonuca göre</span><select class="field" id="history-filter"><option value="all">Tüm takaslar</option><option value="profit">Kâr edenler</option><option value="loss">Zarar edenler</option><option value="break-even">Başa baş</option><option value="pending">Kilidi bekleyenler</option><option value="ready">Açılanlar</option></select></label><label><span class="field-label">Sıralama</span><select class="field" id="history-sort"><option value="newest">En yeni</option><option value="profit-high">En yüksek kâr</option><option value="profit-low">En düşük kâr</option><option value="margin-high">En yüksek marj</option><option value="unlock-soon">Kilidi yakında açılan</option></select></label></div>
+      <details class="panel history-chart-panel" id="history-chart-details"><summary class="history-chart-summary"><span class="history-chart-icon" aria-hidden="true">↗</span><span class="history-chart-heading"><strong id="history-chart-title">Performans grafiği</strong><small id="history-chart-caption">Kayıtlarını zamana göre görselleştir</small></span><span class="history-chart-toggle"><span id="history-chart-toggle-label">Grafiği aç</span><b aria-hidden="true">＋</b></span></summary><div class="history-chart-content"><div class="history-chart-toolbar"><label><span class="field-label">Gösterge</span><select class="field" id="history-chart-mode"><option value="daily-profit">Günlük net kâr</option><option value="cumulative-profit">Birikimli net kâr</option><option value="trade-count">Takas sayısı</option><option value="average-margin">Ortalama kâr marjı</option></select></label><label><span class="field-label">Tarih aralığı</span><select class="field" id="history-chart-range"><option value="14">Son 14 gün</option><option value="30" selected>Son 30 gün</option><option value="90">Son 90 gün</option><option value="365">Son 12 ay</option><option value="all">Tüm kayıtlar</option></select></label><p class="chart-context" id="history-chart-context">Grafik yukarıdaki filtrelerle eşleşen kayıtları gösterir.</p></div><div class="history-chart" id="history-chart"><p class="chart-empty">Kayıt geldikçe performans grafiği görünür.</p></div></div></details>
+      <div class="history-stats">
+        <div class="metric"><span>Gösterilen takas</span><strong id="history-stat-count">0</strong></div>
+        <div class="metric"><span>Gösterilen tahmini kâr</span><strong id="history-stat-profit">$0.00</strong></div>
+        <div class="metric"><span>En yüksek kâr</span><strong id="history-stat-best">$0.00</strong></div>
+        <div class="metric"><span>Ortalama kâr marjı</span><strong id="history-stat-margin">—</strong></div>
+        <div class="metric"><span>Açılmayı bekleyen</span><strong id="history-stat-pending">0</strong></div>
+      </div>
+      <section class="panel"><div id="history-list" class="history-list"></div><div id="history-empty" class="empty history-empty-container">Henüz kayıtlı takas yok. Hesaplayıcıdan planını kaydedebilirsin.</div></section>
+    </section>
+
+    <section class="view" id="view-guide">
+      <div class="view-heading"><div><div class="eyebrow">Başlangıç rehberi · Hesaplama mantığı</div><h1>Trade’i nasıl doğru analiz ederim?</h1><p>Beş adımda nakit karşılığını, site kredisini, bonusu, satış ücretini ve charmı aynı hesapta karşılaştır.</p></div><button class="btn primary" data-open-view="calculator" type="button">Hesaplamaya başla <span aria-hidden="true">↗</span></button></div>
+      <section class="guide-steps" aria-label="Trade hesaplama adımları">
+        <article class="guide-step"><span>01</span><div><h2>Verdiğin itemleri yaz</h2><p>Item başına sitenin hesabına ekleyeceği <strong>site değerini</strong> ve itemi nakde çevirdiğinde eline geçecek <strong>net tutarı</strong> gir. Nakde çevrim tutarı komisyon sonrası gerçekçi değer olmalı.</p></div></article>
+        <article class="guide-step"><span>02</span><div><h2>Bonus uygunluğunu doğrula</h2><p>İlk yükleme kademesi yalnızca SkinMonkey kampanyasına aittir. Şartlara uymuyorsan kutuyu kapat. Hedef satış komisyonunu detaylı hesaplama bölümünden belirle.</p></div></article>
+        <article class="guide-step"><span>03</span><div><h2>Alacağın itemin iki fiyatını gir</h2><p><strong>Site alış</strong> alanına sitede harcanacak kredi tutarını; <strong>brüt piyasa</strong> alanına seçtiğin satış pazarındaki tahmini liste değerini yaz. Ücret bu brüt değerden düşülür.</p></div></article>
+        <article class="guide-step"><span>04</span><div><h2>Charmı yalnızca varsa dahil et</h2><p>Charm seçeneği varsayılan olarak kapalıdır. Aldığın silahta satacağın bir charm varsa “Evet” seç, charmı katalogdan bul ve charm piyasa değerini ekle. Charm dahil edildiyse tahsilat toplamına eklenir ve hedef satış komisyonu da ona uygulanır.</p></div></article>
+        <article class="guide-step"><span>05</span><div><h2>Tavsiyeyi incele ve kaydet</h2><p>Asistan eksi/çok düşük kârı işaretler ve girilmiş hedefler arasındaki en iyi sonucu gösterir. Trade kilidi süresini seçip planı kaydet; kayıt bu cihazdaki geçmişe ve tarihe eklenir.</p></div></article>
+      </section>
+      <div class="guide-grid">
+        <article class="guide-card example-card"><div class="eyebrow">Adım adım örnek</div><h2>$70 site değeri, $65 nakit karşılığı</h2><p>Bu örnekte $70, <strong>verdiğin itemin site değeridir</strong>. Siteden $6 site fiyatlı bir silah alıyorsun. Silahın brüt piyasa değeri $6, dahil ettiğin charmın değeri $5. Bonus ve komisyonu şimdilik kapalı varsayalım.</p><span class="formula">Site/nakit oranı = 70 ÷ 65 = 1,0769<br>Harcanan $6 sitenin nakit maliyeti = 6 ÷ 1,0769 = $5,57<br>Net satış geliri = $6 silah + $5 charm = $11<br>Tahmini kâr = 11 − 5,57 = +$5,43</span><p>Satış komisyonu %2 ise $11 brütten $0,22 kesilir; kâr yaklaşık <strong>+$5,21</strong> olur. Charmı kapatırsan $5 charm hesaba girmez ve bu örnekte kâr yaklaşık <strong>+$0,43</strong> olur.</p><p class="callout-note">“Site alış” alanı $70 olsaydı bu aynı işlem değildi: $70 site kredisi harcamak yaklaşık $65 nakit maliyete karşılık gelir. Fiyatı doğru sütuna girmek sonucu tamamen değiştirir.</p></article>
+        <article class="guide-card"><div class="eyebrow">SkinMonkey bakiye örneği</div><h2>$21.45 yatır, $21.32 harca</h2><p>Paylaşılan kampanya görüntüsündeki ilk eşik ödülü sabit $0.50’dir. Bu örnekte kullanıcı bonus için uygunsa:</p><span class="formula">$21.45 site bakiyesi<br>+ $0.50 ilk yükleme bonusu<br>− $21.32 hedef alış<br>= <strong>$0.63 takas sonrası bakiye</strong></span><p>$0.63 kalan platform kredisidir; tek başına kâr değildir. Brüt kâr ve net kârı hedef itemin piyasa değerinden, komisyonundan ve harcanan kredinin nakit maliyetinden hesaplarız. Kalan bakiyenin nakit eşdeğeri ayrıca gösterilir.</p></article>
+        <article class="guide-card"><div class="eyebrow">Formülün parçaları</div><h2>Bakiye ve kâr farklı şeylerdir</h2><span class="formula">Bonuslu kullanılabilir kredi = yatırım site değeri + uygun SkinMonkey bonusu<br>Takas sonrası bakiye = kullanılabilir kredi − hedef site harcaması<br>Site/nakit oranı = bonuslu kullanılabilir kredi ÷ verilen net nakit karşılığı<br>Harcanan kredi maliyeti = hedef site harcaması ÷ site/nakit oranı<br>Brüt kâr = hedef brüt satış − harcanan kredi maliyeti<br>Net kâr = hedef net satış − harcanan kredi maliyeti</span><p>Kalan bakiye işlem sonrası ayrı varlıktır; net kârın içinde ikinci kez sayılmaz. Kalan bakiyenin nakit eşdeğeri aynı oranla ayrıca hesaplanır. Satış fiyatı, komisyon ve nakde çevrilebilirlik varsayımları sonucu değiştirebilir.</p></article>
+        <article class="guide-card"><div class="eyebrow">Trade asistanı</div><h2>Tavsiyeler nasıl okunmalı?</h2><p>Zarar veya başa baş durumda asistan işlemi gözden geçirmeni söyler. Pozitif kâr marjı %5'in altındaysa çok ince; %5–15 arasındaysa fiyat/komisyonu tekrar kontrol etmen için uyarı verir. %15 üzeri sadece girilen varsayımların güçlü göründüğünü belirtir; pazar fiyatının gerçekleşeceğini garanti etmez.</p><p>Birden fazla hedef satırı eklediğinde hepsi aynı trade'de alınacak kalemler gibi hesaplanır. Alternatifleri kıyaslarken asistan en iyi tekil satırı gösterir; kaydetmeden önce gerçekten alacağın item dışındakileri sil.</p></article>
+        <article class="guide-card"><div class="eyebrow">Fiyat ve veri</div><h2>Fiyatlar nereden geliyor?</h2><p>Görselli katalog CS2 item adı, market adı ve görselini sağlar. Katalog fiyat vermez. “Steam fiyatını al” Steam Community Market’in USD cüzdan fiyatını referans olarak doldurur; bu tutar dış pazarda nakde çevireceğin net tutarla aynı olmayabilir. Nakit değerini satış yapacağın pazar ve kendi ücret oranına göre kontrol et.</p><p>Elle girilen her değer tahmindir. Piyasa fiyatı değişebilir, satıcı ücreti ve likidite farklı olabilir. Asistan yalnızca senin girdiğin varsayımlara göre sonuç üretir; gerçekleşecek kârı garanti etmez.</p></article>
+        <article class="guide-card"><div class="eyebrow">SkinMonkey bonusu</div><h2>İlk yükleme kademesi nasıl hesaplanır?</h2><p>Hesaplayıcı, paylaştığın SkinMonkey bonus tablosuna göre en yüksek tamamlanan kademenin sabit ödülünü ekler: $10’da $0.50, $50’de $2.50, $100’de $5.00. Örneğin $21.45 yatırımda bonus $0.50 olur; yüzdeyle çarpılmaz. Platform SkinSwap, CSFloat veya Diğer ise SkinMonkey bonusu eklenmez.</p><p>“İlk SkinMonkey yüklemem bonus için uygun” seçimini yalnızca kampanya koşullarına gerçekten uyuyorsan açık bırak. Hesaplayıcı uygunluğu doğrulamaz. Kod: <strong>PRIME</strong> · <a href="https://skinsmonkey.com/tr/r/PRIME" target="_blank" rel="noopener noreferrer">SkinMonkey davet sayfası</a>.</p><p class="callout-note">Kademeler paylaşılan ekran görüntüsüne dayanır. Kampanya koşulu, yükleme tutarının nasıl sayıldığı veya uygunluk değişebilir; güncel şartları işlem öncesi SkinMonkey’de doğrula.</p></article>
+        <article class="guide-card"><div class="eyebrow">Kayıt ve gizlilik</div><h2>Geçmiş neden cihazında saklanır?</h2><p>Kayıtlar sunucuya gönderilmez; bu tarayıcı profilinde tutulur. Geçmişte kaydedilme zamanı, açılma sayacı, itemler, charm tercihi, fiyat kaynakları ve hesap varsayımları yer alır. Cihazlar arasında taşımak için JSON dışa aktar ve diğer cihazda içe aktar.</p><p>Geçmişi kâr, zarar, açılan/kilitli durum, tarihe veya en yüksek marja göre filtreleyebilirsin. Bir kaydı ayrı ayrı ya da tüm geçmişi silebilirsin.</p></article>
+        <article class="guide-card"><div class="eyebrow">Sık sorulanlar</div><h2>Net cevaplar</h2><details class="faq"><summary>$0.63 kalan bakiye neden $0.63 kâr değil?</summary><p>Kalan kredi hâlâ platform hesabındaki bakiyedir; satılmış item değildir. Net kâr hedef itemin net nakit tahsilatı ile harcanan kredinin nakit maliyetini karşılaştırır. Kalan bakiyenin nakit eşdeğeri ayrıca gösterilir.</p></details><details class="faq"><summary>Bonus neden sadece SkinMonkey’de?</summary><p>Hesaplayıcıdaki $10/$50/$100 kademeleri paylaştığın SkinMonkey kampanya ekranına dayanır. Diğer pazarlar için bu bonus varsayımı uygulanmaz.</p></details><details class="faq"><summary>Steam fiyatını nakit fiyatı olarak kullanmalı mıyım?</summary><p>Steam fiyatı cüzdan bakiyesidir. Nakit çekim değeri farklıysa piyasa alanını elle nakit tahsilat tahmininle değiştir; yoksa komisyon ve fiyat farkı kârı olduğundan yüksek gösterebilir.</p></details><details class="faq"><summary>Plan gerçek bir trade teklifi gönderiyor mu?</summary><p>Hayır. TradeCalc Steam’e giriş yapmaz, envanterine erişmez ve teklif göndermez. Yalnızca karşılaştırma ve yerel kayıt aracı olarak çalışır.</p></details><details class="faq"><summary>Telefonumu değiştirirsem kayıtlar gelir mi?</summary><p>Otomatik eşitleme yok. Eski cihazda JSON yedeği dışa aktar, yeni cihazda içe aktar.</p></details><a class="btn donate" href="https://steamcommunity.com/tradeoffer/new/?partner=1800489426&amp;token=jIoKxNd7" target="_blank" rel="noopener noreferrer">♡ Ücretsiz projeyi Steam üzerinden destekle</a></article>
+      </div>
+    </section>
+  </main>
+
+  <footer><div class="wrap"><span>HaKING TradeCalc · CS2 item ve trade planlayıcı</span><span>Item kataloğu: <a href="https://github.com/ByMykel/CSGO-API" target="_blank" rel="noopener noreferrer">ByMykel/CSGO-API</a> · Valve ile bağlantısı yoktur.</span></div></footer>
+
+  <div class="modal-backdrop" id="picker-modal" role="dialog" aria-modal="true" aria-labelledby="picker-title">
+    <div class="modal">
+      <div class="modal-head"><h2 id="picker-title">CS2 item kataloğunda ara</h2><button class="btn small" id="close-picker" type="button">Kapat ✕</button></div>
+  <div class="modal-controls"><label><span class="visually-hidden">Kategori</span><select class="field" id="catalog-category"><option value="all">Tüm itemler</option><option value="skins">Silah skinleri</option><option value="gloves">Eldivenler</option><option value="stickers">Stickerlar</option><option value="keychains">Charmlar / keychain</option><option value="agents">Ajanlar</option><option value="crates">Kasalar / kapsüller</option><option value="collectibles">Koleksiyon itemleri</option><option value="graffiti">Graffiti</option><option value="music_kits">Müzik kitleri</option><option value="patches">Patch</option><option value="sticker_slabs">Sticker slab</option><option value="keys">Kasa anahtarları</option><option value="highlights">Highlight itemleri</option><option value="base_weapons">Temel itemler</option><option value="pets">Pet itemleri</option></select></label><label><span class="visually-hidden">Item ara</span><input class="field" id="catalog-query" type="search" placeholder="Item adı yaz, ör. AK-47 | Redline" autocomplete="off"></label></div>
+      <div class="modal-results" id="catalog-results"><div class="modal-status">Aramak için en az 2 karakter yaz.</div></div>
+    </div>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="/assets/trade-math.js" defer></script>
+  <script src="/assets/app.js" defer></script>
+</body>
+</html>

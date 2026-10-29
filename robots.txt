@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://trade.haking.tr/sitemap.xml

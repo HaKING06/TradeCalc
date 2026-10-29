@@ -1,0 +1,11 @@
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: DENY
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' https://raw.githubusercontent.com https://community.akamai.steamstatic.com https://cdn.steamstatic.com https://steamcommunity-a.akamaihd.net https://steamcdn-a.akamaihd.net; connect-src 'self' https://raw.githubusercontent.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
+
+/api/*
+  X-Content-Type-Options: nosniff
+  Cache-Control: no-store
+  X-Frame-Options: DENY

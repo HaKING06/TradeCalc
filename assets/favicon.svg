@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="HaKING TradeCalc">
+  <rect x="2" y="2" width="60" height="60" rx="17" fill="#17243d"/>
+  <rect x="13" y="35" width="8" height="13" rx="2" fill="#6685eb"/>
+  <rect x="28" y="26" width="8" height="22" rx="2" fill="#829bea"/>
+  <rect x="43" y="17" width="8" height="31" rx="2" fill="#a9b9f5"/>
+  <path d="m12 27 12-9 10 6 18-14m-10 0h10v10" fill="none" stroke="#f4f6ff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.4"/>
+</svg>
