@@ -52,6 +52,14 @@
 .guide-card .faq{margin-top:9px}
 .history-empty-container{margin:14px}
 .nav #history-count{display:inline-grid;min-width:18px;height:18px;place-items:center;margin-left:4px;padding:0 5px;border-radius:999px;background:var(--panel2);font-size:9px}
+.target-row .charm-line{grid-template-columns:minmax(0,1fr) minmax(150px,.34fr);gap:12px;align-items:end;padding:13px 0 0}
+.charm-price{width:auto;min-width:0}
+.charm-price .field-label{white-space:nowrap;letter-spacing:.07em}
+.charm-price .field{padding-left:26px;text-align:right}
+.charm-price .currency-mark{top:25px}
+.charm-control{display:grid;grid-template-columns:minmax(0,1fr) 38px;gap:8px}
+.charm-pick{min-width:0;width:100%;justify-content:flex-start;min-height:40px}
+.charm-clear{min-height:40px}
 
 html[data-theme="dark"]{color-scheme:dark;--bg:#0b1020;--panel:#111a2b;--panel2:#172237;--line:#29364d;--muted:#9caac0;--text:#edf2fb;--green:#77dfba;--green2:#55c59d;--accent:#91aaff;--red:#ff8294;--amber:#f2c574;--blue:#91aaff;--shadow:0 14px 36px #02061155;--r:14px}
 html[data-theme="dark"] body{background:radial-gradient(ellipse at 12% -10%,#314b8230,transparent 37%),radial-gradient(ellipse at 91% 3%,#1c796b17,transparent 30%),var(--bg);color:var(--text)}
@@ -192,5 +200,6 @@ html[data-theme="dark"] :focus-visible{outline-color:#9bb0ff!important}
   .history-controls{grid-template-columns:1fr 1fr;padding:10px;gap:8px}.history-search-field{grid-column:1/-1}.history-controls .field{font-size:11px}
   .history-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.history-stats .metric{padding:10px}.history-stats .metric strong{font-size:15px}
   .history-chart-summary{min-height:67px;padding:11px;gap:9px}.history-chart-icon{width:34px;height:34px}.history-chart-heading strong{font-size:12px}.history-chart-heading small{font-size:9px}.history-chart-toggle{gap:5px;font-size:9px}.history-chart-toolbar{grid-template-columns:1fr 1fr;padding:11px 11px 0;gap:8px}.history-chart{padding:8px 7px 12px;min-height:130px}.chart-label{font-size:9px}.chart-value{font-size:8px}
+  .target-row .charm-line{grid-template-columns:minmax(0,1fr) minmax(118px,.42fr);gap:9px;padding:11px 0 0}.charm-price .field-label{font-size:8px;letter-spacing:.04em}.charm-control{gap:6px}
   .guide-grid{grid-template-columns:1fr;gap:9px}.guide-card.example-card{grid-column:auto}.guide-card{padding:14px}.guide-steps{grid-template-columns:1fr}.guide-step:nth-child(5){grid-column:auto}.guide-step{padding:12px;grid-template-columns:30px minmax(0,1fr);gap:9px}.guide-step>span{width:28px;height:28px}
 }

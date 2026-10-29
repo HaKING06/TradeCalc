@@ -10,7 +10,7 @@ Tarayıcıda çalışan CS2 takas planlayıcısı. Frontend `index.html` ve `ass
 - Takas sonrası platform bakiyesi ile kalan bakiyenin nakit eşdeğerini brüt/net kârdan ayrı gösterme.
 - Brüt hedef piyasa değerine uygulanabilen düzenlenebilir satış komisyonu.
 - Her hedefte charm dahil mi seçimi (varsayılan: hayır); dahilse charm ve piyasa değeri zorunlu olarak ayrı girilir.
-- Steam Community Market en düşük/medyan fiyatını sunucu fonksiyonundan alma.
+- Piyasa fiyatlarını kullanıcı tarafından manuel girme; site Steam fiyatı çekmez.
 - 0–8 gün trade açılma süresi, kayıt anı ve her görüntülemede yenilenen kalan süre.
 - Yerel geçmiş, tarih/sonuç filtresi, en yüksek kâr ve marja göre sıralama, günlük kâr grafiği, tekil/tam silme ve JSON içe/dışa aktarma.
 - Kâra, eksik girdiye, düşük marja ve yetersiz site bakiyesine göre anlık trade tavsiyesi.
@@ -29,7 +29,7 @@ node --test tests/trade-math.test.js
 
 ## Önemli fiyat notu
 
-Yatırdığın itemin **net nakit karşılığını**, itemi ilgili pazarda sattıktan sonra gerçekten alacağını düşündüğün değer olarak gir. Hedef item için **brüt satış fiyatını** gir; hesaplayıcı hedef satış komisyonunu silah ve dahil edilen charm toplamından düşer. Hedef satış fiyatı zaten net tahsilat ise komisyonu `%0` bırak. Steam Community Market fiyatı cüzdan fiyatıdır ve nakit ödeme fiyatı olmayabilir; Steam'den alınan referansı dış pazarda nakde dönüşecek fiyat sanma, gerektiğinde elle düzelt.
+Yatırdığın itemin **net nakit karşılığını**, itemi ilgili pazarda sattıktan sonra gerçekten alacağını düşündüğün değer olarak gir. Hedef item için **brüt satış fiyatını** gir; hesaplayıcı hedef satış komisyonunu silah ve dahil edilen charm toplamından düşer. Hedef satış fiyatı zaten net tahsilat ise komisyonu `%0` bırak. Fiyatları işlem yapacağın pazardan manuel doğrula; uygulama Steam fiyatı çekmez.
 
 Hesaplama modeli:
 
@@ -46,19 +46,19 @@ marj = tahmini kâr / hedef maliyeti
 
 Kalan site bakiyesi gerçekleşmiş nakit değildir ve net kâra ikinci kez eklenmez; aynı site/nakit oranıyla nakit eşdeğeri ayrıca gösterilir. Kademeler kullanıcının paylaştığı SkinMonkey ekran görüntüsündeki değerlerdir, SkinMonkey kampanyasının güncel uygunluk koşullarını doğrulamaz. Eski geçmiş kayıtları içe aktarılırken tarihsel bonus tutarları korunur.
 
-CS2 isim, kategori, nadirlik ve görsel kataloğu ByMykel/CSGO-API'den okunur. Canlı katalog araması `/api/catalog` Pages Function üzerinden geçer; upstream kategori yolları sunucu tarafında izin listesiyle sınırlandırılmıştır. Steam fiyatı `/api/market-price` üzerinden istenir. Uygulamada harici servis anahtarı veya Steam hesabı bilgisi yoktur.
+CS2 isim, kategori, nadirlik ve görsel kataloğu ByMykel/CSGO-API'den okunur. Canlı katalog araması `/api/catalog` Pages Function üzerinden geçer; upstream kategori yolları sunucu tarafında izin listesiyle sınırlandırılmıştır. Function yanıt vermezse arama tarayıcıdan izin verilen katalog JSON dosyalarına geri döner. Piyasa fiyatı API'si yoktur; fiyatlar kullanıcı tarafından girilir.
 
 ## Cloudflare Pages ile yayınlama
 
 1. Bu klasörü GitHub deposunun köküne gönder.
-2. Cloudflare Dashboard → **Workers & Pages** → **Create** → **Pages** → **Connect to Git** adımlarından depoyu seç.
-3. Framework preset olarak **None** seç; build komutuna `exit 0`, build output directory olarak `.` gir. `functions/` klasörü proje kökünde kalmalı ki `/api/catalog` ve `/api/market-price` Pages Functions olarak dağıtılsın.
+2. Cloudflare Dashboard → **Workers & Pages** → **Create** → **Pages** → **Connect to Git** adımlarından depoyu seç. Workers Builds projesi oluşturma; bu depo Pages dosya yapısını (`functions/` ve `_headers`) kullanır.
+3. Framework preset olarak **None** seç; build komutunu boş bırak, build output directory olarak `.` kullan. Root directory depo kökü olsun. `functions/` klasörü proje kökünde kalmalı ki `/api/catalog` Pages Function olarak dağıtılsın.
 4. Deploy tamamlanınca Pages projesinde **Custom domains** bölümünden `trade.haking.tr` alan adını ekle ve DNS kaydını Cloudflare'ın önerdiği şekilde doğrula.
-5. `/api/catalog?category=keychains&q=charm` ve `/api/market-price?name=AK-47%20%7C%20Redline%20%28Field-Tested%29` uçlarının JSON yanıt verdiğini, ardından hesaplayıcıyı masaüstü ve telefonda açarak kontrol et.
+5. `/api/catalog?category=keychains&q=charm` adresinin JSON yanıtını ve görselli item aramasını kontrol et. Fiyat alanlarını işlem yaptığın pazardan bulduğun değerlerle elle doldur.
 
-Yerel statik önizleme için proje kökünde `python -m http.server 8000 --bind 127.0.0.1` komutunu çalıştırıp `http://127.0.0.1:8000` adresini açabilirsin. Python sunucusunda `/api/catalog` bulunmadığından frontend CS2 katalog verisini tarayıcıdan doğrudan yükler ve indirdiği listeyi bellekte önbelleğe alır. Görselli katalog için internet bağlantısı gerekir. Bu basit sunucu `/api/market-price` proxy'sini çalıştırmaz; piyasa fiyatlarını elle gir.
+Yerel statik önizleme için proje kökünde `python -m http.server 8000 --bind 127.0.0.1` komutunu çalıştırıp `http://127.0.0.1:8000` adresini açabilirsin. Python sunucusunda `/api/catalog` bulunmadığından frontend CS2 katalog verisini tarayıcıdan doğrudan yükler ve indirdiği listeyi bellekte önbelleğe alır. Görselli katalog için internet bağlantısı gerekir. Fiyatlar her ortamda elle girilir.
 
-Katalog ve Steam fiyatı API'leriyle beraber tam yerel test için Wrangler kullan: `npx wrangler pages dev .`. Node.js ve Wrangler kurulu olmalıdır. Build adımı yoktur.
+Katalog Pages Function'ını yerelde test etmek istersen Wrangler kullan: `npx wrangler pages dev .`. Node.js ve Wrangler kurulu olmalıdır. Build adımı yoktur.
 
 ## Yerel veriler ve yedek
 
